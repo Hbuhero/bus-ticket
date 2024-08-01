@@ -1,5 +1,6 @@
 package hud.example.ticketApp.model;
 
+import hud.example.ticketApp.model.enums.SeatStatus;
 import hud.example.ticketApp.model.enums.SeatType;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,7 +20,9 @@ public class Seat {
 
     @Enumerated(value = EnumType.STRING)
     private SeatType type;
-    private String customer;
+
+    @Enumerated(value = EnumType.STRING)
+    private SeatStatus seatStatus;
 
     public Seat(Long seatNumber){
         this.seatNumber = seatNumber;

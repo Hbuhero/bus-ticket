@@ -2,6 +2,7 @@ package hud.example.ticketApp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hud.example.ticketApp.model.enums.BusState;
+import hud.example.ticketApp.model.enums.SeatStatus;
 import hud.example.ticketApp.model.enums.SeatType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,21 +21,13 @@ public class Bus {
     @Id
     private Long busId;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn
     @JsonIgnore
     private List<Seat> seats = createBusSeats();
 
-    private LocalTime departingTime;
-    private LocalTime arrivingTime;
-    private LocalDate departingDate;
-    private LocalDate arrivingDate;
-    private String departingLocation;
-    private String arrivingLocation;
-    private Long fee;
-
     @Enumerated(value = EnumType.STRING)
     private BusState state;
-
 
 
     public static List<Seat> createBusSeats(){
@@ -45,6 +38,7 @@ public class Bus {
 
         // looping through the list
         for (int i =0; i<53; i++){
+            seats.get(i).setSeatStatus(SeatStatus.EMPTY);
             // set the 3 seats to aisle in the last 5 seats
             if ((i+1)>49 && (i+1)<53){
                 seats.get(i).setType(SeatType.AISLE);
